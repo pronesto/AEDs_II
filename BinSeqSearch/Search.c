@@ -6,7 +6,7 @@ void Inicializa(Tabela *T) {
   T->n = 0;
 }
 
-Indice Pesquisa(TipoChave x, Tabela *T) {        
+int Pesquisa(TipoChave x, Tabela *T) {        
   int i;
   T->Item[0].Chave = x;
   i = T->n + 1;
@@ -16,13 +16,13 @@ Indice Pesquisa(TipoChave x, Tabela *T) {
   return i;
 }
 
-Indice Binaria(TipoChave x, Tabela *T) {
+int Binaria(TipoChave x, Tabela *T) {
   if (T->n == 0)
     return 0;
   else {
-    Indice i;
-    Indice Esq = 1; 
-    Indice Dir = T->n; 
+    int i;
+    int Esq = 1; 
+    int Dir = T->n; 
     do { 
       i = (Esq + Dir) / 2; 
       if (x > T->Item[i].Chave) 

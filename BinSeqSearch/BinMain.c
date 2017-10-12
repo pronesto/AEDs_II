@@ -1,3 +1,9 @@
+/******************************************************************************
+  This program shows how the binary search works. We shall generate random keys
+  in ascending order, and shall insert them into a table. After that, we shall
+  look for these keys.
+ ******************************************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -24,8 +30,7 @@ int main() {
   }
   printf("\nSearching:\n");
   for (i = 0; i < maxKey + 1; i++) {
-    Indice idx = Binaria(i, &T);
-    if (idx)
+    if (Binaria(i, &T))
       printf("%4d%4s", i, "+");
     else
       printf("%4d%4s", i, "-");

@@ -7,24 +7,41 @@ typedef int TipoChave;
 
 typedef struct {
   TipoChave Chave;
-  /* outros componentes */
+  /* Add other elements to be stored here. */
 } Registro;
-
-typedef int Indice;
 
 typedef struct {
   Registro Item[MAX + 1];
-  Indice n;
+  int n;
 } Tabela;
 
+/*
+ * Initializes a table T setting the number of elements to zero.
+ * @param T: the table to be initialized.
+ */
 void Inicializa(Tabela *T);
 
-Indice Pesquisa(TipoChave x, Tabela *T);
-
-Indice Binaria(TipoChave x, Tabela *T);
-
+/*
+ * Inserts an element into the table.
+ * @param Reg: the element to be inserted.
+ * @param T: the table to be modified with the new element.
+ */
 void Insere(Registro Reg, Tabela *T);
 
-TipoChave gen();
+/*
+ * Finds an element within the table, using a sequential search.
+ * @param x: the element to be found.
+ * @param T: the table to be searched.
+ * @return: the index of the element, or zero if not found.
+ */
+int Pesquisa(TipoChave x, Tabela *T);
+
+/*
+ * Finds an element within a sorted table, using a binary search.
+ * @param x: the element to be found.
+ * @param T: the table to be searched.
+ * @return: the index of the element, or zero if not found.
+ */
+int Binaria(TipoChave x, Tabela *T);
 
 #endif
