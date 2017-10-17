@@ -20,11 +20,11 @@ struct RedBlackNode {
     ColorType Color;
 };
 
+int isNullNode(RedBlackTree p);
 RedBlackTree MakeEmpty(RedBlackTree T);
 RedBlackTree Initialize(void);
 RedBlackTree Insert(ElementType X, RedBlackTree T);
 ElementType Retrieve(RedBlackTree P);
-void PrintTree(RedBlackTree T);
 void Central_RBT_Header(RedBlackTree T, void (*visitor)(RedBlackTree));
  
 #endif  /* _RedBlack_H */

@@ -4,6 +4,8 @@
 #include "RBT.h"
  
 static RedBlackTree NullNode = NULL;
+
+int isNullNode(RedBlackTree p) { return p == NullNode; }
  
 /* Initialization procedure */
 RedBlackTree Initialize(void) {
@@ -25,10 +27,7 @@ RedBlackTree Initialize(void) {
   return T;
 }
 
-/* END */
-
-static void
-Central_RBT(RedBlackTree T, void (*visitor)(RedBlackTree)) {
+static void Central_RBT(RedBlackTree T, void (*visitor)(RedBlackTree)) {
   if (T != NullNode) {
     Central_RBT(T->Left, visitor);
     (*visitor)(T);
@@ -36,40 +35,15 @@ Central_RBT(RedBlackTree T, void (*visitor)(RedBlackTree)) {
   }
 }
 
-void
-Central_RBT_Header(RedBlackTree T, void (*visitor)(RedBlackTree)) {
+void Central_RBT_Header(RedBlackTree T, void (*visitor)(RedBlackTree)) {
   Central_RBT(T->Right, visitor);
 }
 
-/* END */
-
-void
-Output(ElementType Element) {
+void Output(ElementType Element) {
   printf("%d\n", Element);
 }
 
-/* Print the tree, watch out for NullNode, */
-
-/* and skip header */
-
-static void
-DoPrint(RedBlackTree T) {
-  if (T != NullNode) {
-    DoPrint(T->Left);
-    Output(T->Element);
-    DoPrint(T->Right);
-  }
-}
-
-void
-PrintTree(RedBlackTree T) {
-  DoPrint(T->Right);
-}
-
-/* END */
-
-static RedBlackTree
-MakeEmptyRec(RedBlackTree T) {
+static RedBlackTree MakeEmptyRec(RedBlackTree T) {
   if (T != NullNode) {
     MakeEmptyRec(T->Left);
     MakeEmptyRec(T->Right);
@@ -83,13 +57,7 @@ RedBlackTree MakeEmpty(RedBlackTree T) {
   return T;
 }
 
-/* This function can be called only if K2 has a left child */
-/* Perform a rotate between a node (K2) and its left child */
-
-/* Update heights, then return new root */
-
-static RedBlackTree
-SingleRotateWithLeft(RedBlackTree K2) {
+static RedBlackTree SingleRotateWithLeft(RedBlackTree K2) {
   RedBlackTree K1;
 
   K1 = K2->Left;
@@ -99,13 +67,7 @@ SingleRotateWithLeft(RedBlackTree K2) {
   return K1; /* New root */
 }
 
-/* This function can be called only if K1 has a right child */
-/* Perform a rotate between a node (K1) and its right child */
-
-/* Update heights, then return new root */
-
-static RedBlackTree
-SingleRotateWithRight(RedBlackTree K1) {
+static RedBlackTree SingleRotateWithRight(RedBlackTree K1) {
   RedBlackTree K2;
 
   K2 = K1->Right;
@@ -114,11 +76,6 @@ SingleRotateWithRight(RedBlackTree K1) {
 
   return K2; /* New root */
 }
-
-/* Perform a rotation at node X */
-/* (whose parent is passed as a parameter) */
-
-/* The child is deduced by examining Item */
 
 static RedBlackTree Rotate(ElementType Item, RedBlackTree Parent) {
   if (Item < Parent->Element)
@@ -133,8 +90,7 @@ static RedBlackTree Rotate(ElementType Item, RedBlackTree Parent) {
 
 static RedBlackTree X, P, GP, GGP;
 
-static
-void HandleReorient(ElementType Item, RedBlackTree T) {
+static void HandleReorient(ElementType Item, RedBlackTree T) {
   X->Color = Red; /* Do the color flip */
   X->Left->Color = Black;
   X->Right->Color = Black;
@@ -178,6 +134,7 @@ RedBlackTree Insert(ElementType Item, RedBlackTree T) {
 
   HandleReorient(Item, T); /* Color it red; maybe rotate */
 
+  NullNode->Element = ~0U;
   return T;
 }
 

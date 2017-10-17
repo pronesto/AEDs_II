@@ -1,0 +1,154 @@
+* Self-Balancing Trees
+
+? What's the worst-case complexity of each one of these operations on trees?
+  ? Insert
+  ? Remove
+  ? Search
+
+
+? What is the key metric that determines these complexities?
+
+
+? If we decide to use a tree to sort numbers, what would be the complexity of
+  our sorting routine?
+
+
+? [treeSort1.c] Implement a tree-based sort algorithm:
+
+int main(int argc, char** argv) {
+  if (argc < 1) {
+    fprintf(stderr, "Syntax: %s num_nodes", argv[0]);
+  } else {
+    clock_t start, end;
+    Apontador D;
+    Inicializa(&D);
+    int i;
+    const int MAX = atoi(argv[1]);
+    start = clock();
+    for (i = 0; i < MAX; i++) {
+      Registro Reg;
+      Reg.Chave = gen();
+      Insere(Reg, &D);
+    }
+    end = clock();
+    // Print the tree in dot format:
+    Central(D, &print);
+    printf("\nTime = %lf secs\n", ((double)(end - start))/CLOCKS_PER_SEC);
+  }
+}
+
+
+? [treeSort1.c] Implement a gen() function that always produces keys in
+  ascending order:
+
+TipoChave gen() {
+  static TipoChave t = 0;
+  return t++;
+}
+
+
+? What is the meaning of 'static' in the program above?
+
+
+? [treeSort2.c] try to get the times for inputs of different sizes:
+
+
+? What if we had guarantees that the height of the tree is at most h?
+
+
+? What is a balanced tree?
+  - An empty tree is balanced.
+  - A tree T = (n, T1, T2) is balanced if:
+    - T1 is balanced
+    - T2 is balanced
+    - the size difference between T1 and T2 is at most 1.
+
+
+? What is the height h of a balanced tree with n elements?
+
+% Red-Black Trees %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+==== Properties ====
+
+1 Each node is either red or black.
+2 All leaves are black.
+3 If a node is red, then both its children are black.
+4 Every path from a given node to any of its descendant NIL nodes contains the
+  same number of black nodes.
+
+? Can you show that "the path from the root to the farthest leaf is no more than twice as long as the path from the root to the nearest leaf."
+
+For a red–black tree T, let B be the number of black nodes in property 4.
+Let the shortest possible path from the root of T to any leaf consist of B
+black nodes. Longer possible paths may be constructed by inserting red nodes.
+However, property 3 makes it impossible to insert more than one consecutive red
+node. Therefore, ignoring any black NIL leaves, the longest possible path
+consists of 2*B nodes, alternating black and red (this is the worst case).
+Counting the black NIL leaves, the longest possible path consists of 2*B-1
+nodes.
+
+? How's the shortest possible path from root to leaf?
+
+All black nodes.
+
+? How's the longest possible path from root to leaf?
+
+Alternation between red and black nodes
+
+==== Implementation: the node family ====
+
+* Nodes will have a parent. We can get the parent of a node like this:
+
+
+NodePtr parent(NodePtr n) {
+  return n->parent;
+}
+
+? How many grandparents has a node?
+- Only one. Otherwise, the RB Tree would not be a tree!
+
+? Can you get the grandparent of a node?
+
+NodePtr grandparent(NodePtr n) {
+  NodePtr p = parent(n);
+  return (p == NULL) ? NULL : parent(p);
+}
+
+? How many siblings has a node in a Red-Black Tree?
+- Only one! It's still a binary tree :)
+
+? Can you get the sibling of a node?
+
+NodePtr sibling(NodePtr n) {
+  NodePtr p = parent(n);
+  if (p == NULL)
+    return NULL;
+  else
+    return (n == p->left) ? p->right : p->left;
+}
+
+? How many uncles has a node?
+- Again, only one! A node has only one grandparent, which can have only two
+children. One is already the parent of the node. The other must be the uncle.
+
+NodePtr uncle(NodePtr n) {
+  return (grandparent(n) == NULL) ? NULL : sibling(parent(n));
+}
+
+==== Insertion ====
+
+void rotate_left(NodePtr n) {
+  NodePtr nnew = n->right;
+  n->right = nnew->left;
+  nnew->left = n;
+  nnew->parent = n->parent;
+  n->parent = nnew;
+}
+
+void rotate_right(NodePtr n) {
+  NodePtr nnew = n->left;
+  n->left = nnew->right;
+  nnew->right = n;
+  nnew->parent = n->parent;
+  n->parent = nnew;
+}

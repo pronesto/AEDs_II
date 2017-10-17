@@ -6,28 +6,23 @@
 #include "TreeGen.h"
 
 void printDot_aux(RedBlackTree p) {
+  if (p->Color == Red) {
+    printf("  %d [style=filled fillcolor=red];\n", p->Element);
+  }
   if (p->Left)
-    printf("  %d -> %d\n", p->Element, p->Left->Element);
-  else {
-    printf("  %d -> l%d\n", p->Element, p->Element);
-    printf("  l%d [shape = point]\n", p->Element);
-  }
+    printf("  %d -> %d;\n", p->Element, p->Left->Element);
   if (p->Right)
-    printf("  %d -> %d\n", p->Element, p->Right->Element);
-  else {
-    printf("  %d -> r%d\n", p->Element, p->Element);
-    printf("  r%d [shape = point]\n", p->Element);
-  }
+    printf("  %d -> %d;\n", p->Element, p->Right->Element);
 }
 
 void printDot(RedBlackTree p) {
   printf("\ndigraph tree {\n");
-  Central_RBT_Header(p, &printDot);
+  Central_RBT_Header(p, &printDot_aux);
   printf("\n}\n");
 }
 
 int main(int argc, char** argv) {
-  if (argc < 3) {
+  if (argc < 2) {
     fprintf(stderr, "Syntax: %s num_nodes\n", argv[0]);
   } else {
     const int num_nodes = atoi(argv[1]);

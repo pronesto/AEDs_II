@@ -12,8 +12,7 @@ then
     exit 1
 else
   num_nodes=$1
-  dot_type=$2
   dot_name=file.dot
-  ./treeGen $num_nodes $dot_type > $dot_name ;
+  ./DotMain $num_nodes > $dot_name ;
   open $dot_name
 fi
