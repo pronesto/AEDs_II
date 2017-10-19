@@ -51,7 +51,10 @@ TipoChave gen() {
 
 
 ? [treeSort2.c] try to get the times for inputs of different sizes:
-
+for ((num_nodes = 100; num_nodes < 5000; num_nodes += 200))
+do
+  ./TimeTreeMain $num_nodes 0 > /dev/null ;
+done
 
 ? What if we had guarantees that the height of the tree is at most h?
 
@@ -95,60 +98,62 @@ All black nodes.
 
 Alternation between red and black nodes
 
-==== Implementation: the node family ====
+==== Implementation ====
 
-* Nodes will have a parent. We can get the parent of a node like this:
+? How would be the data-structure that describes nodes in a RB-Tree?
+
+typedef enum ColorType {
+    Red, Black
+} ColorType;
+
+typedef struct RedBlackNode *RedBlackTree;
+
+struct RedBlackNode {
+    ElementType Element;
+    RedBlackTree Left;
+    RedBlackTree Right;
+    ColorType Color;
+};
 
 
-NodePtr parent(NodePtr n) {
-  return n->parent;
+? How would you insert a new node in the RB-Tree, ensuring the key properties?
+1. Nodes are inserted as Red
+2. Nodes are inserted as leaves
+3. Rotate nodes to preserve properties
+
+* Show video of simple rotation in RBT:
+https://www.youtube.com/watch?v=zomMSaA94Uk&t=8s
+
+* Show video of Double Rotations in RBT:
+https://www.youtube.com/watch?v=Qfqm4EuIs3w&t=22s
+
+
+=== Playing with the Tree ===
+
+? Can you implement a program to find the height of the RBT?
+
+#define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
+
+int RBT_Height(RedBlackTree T) {
+  int height_esq = 0;
+  int height_dir = 0;
+  if (!isNullNode(T->Left))
+    height_esq = RBT_Height(T->Left);
+  if (!isNullNode(T->Right))
+    height_dir = RBT_Height(T->Right);
+  return MAX(height_esq, height_dir) + 1;
 }
 
-? How many grandparents has a node?
-- Only one. Otherwise, the RB Tree would not be a tree!
 
-? Can you get the grandparent of a node?
+? Could you compare it with the program that finds the height of a binary
+  search tree?
 
-NodePtr grandparent(NodePtr n) {
-  NodePtr p = parent(n);
-  return (p == NULL) ? NULL : parent(p);
-}
-
-? How many siblings has a node in a Red-Black Tree?
-- Only one! It's still a binary tree :)
-
-? Can you get the sibling of a node?
-
-NodePtr sibling(NodePtr n) {
-  NodePtr p = parent(n);
-  if (p == NULL)
-    return NULL;
-  else
-    return (n == p->left) ? p->right : p->left;
-}
-
-? How many uncles has a node?
-- Again, only one! A node has only one grandparent, which can have only two
-children. One is already the parent of the node. The other must be the uncle.
-
-NodePtr uncle(NodePtr n) {
-  return (grandparent(n) == NULL) ? NULL : sibling(parent(n));
-}
-
-==== Insertion ====
-
-void rotate_left(NodePtr n) {
-  NodePtr nnew = n->right;
-  n->right = nnew->left;
-  nnew->left = n;
-  nnew->parent = n->parent;
-  n->parent = nnew;
-}
-
-void rotate_right(NodePtr n) {
-  NodePtr nnew = n->left;
-  n->left = nnew->right;
-  nnew->right = n;
-  nnew->parent = n->parent;
-  n->parent = nnew;
+int Tree_Height(Apontador T) {
+  int height_esq = 0;
+  int height_dir = 0;
+  if (T->Esq)
+    height_esq = Tree_Height(T->Esq);
+  if (T->Dir)
+    height_dir = Tree_Height(T->Dir);
+  return MAX(height_esq, height_dir) + 1;
 }

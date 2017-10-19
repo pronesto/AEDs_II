@@ -5,8 +5,10 @@
  
 static RedBlackTree NullNode = NULL;
 
-int isNullNode(RedBlackTree p) { return p == NullNode; }
- 
+int isNullNode(RedBlackTree T) {
+  return T == NullNode;
+}
+
 /* Initialization procedure */
 RedBlackTree Initialize(void) {
   RedBlackTree T;
@@ -15,7 +17,7 @@ RedBlackTree Initialize(void) {
     NullNode = malloc(sizeof ( struct RedBlackNode));
     NullNode->Left = NullNode->Right = NullNode;
     NullNode->Color = Black;
-    NullNode->Element = ~0U;
+    NullNode->Element = NegInfinity;
   }
 
   /* Create the header node */
@@ -134,10 +136,6 @@ RedBlackTree Insert(ElementType Item, RedBlackTree T) {
 
   HandleReorient(Item, T); /* Color it red; maybe rotate */
 
-  NullNode->Element = ~0U;
+  NullNode->Element = NegInfinity;
   return T;
-}
-
-ElementType Retrieve(RedBlackTree P) {
-  return P->Element;
 }

@@ -35,7 +35,6 @@ RedBlackTree genDegenerateRBT(const int NUM_NODES) {
   int i;
   RedBlackTree T;
   T = Initialize();
-  T = MakeEmpty(T);
   for (i = 0; i < NUM_NODES; i++) {
     T = Insert(t++, T);
   }
@@ -46,7 +45,6 @@ RedBlackTree genRandomRBT(const int NUM_NODES, const int MAX_KEY) {
   int i;
   RedBlackTree T;
   T = Initialize();
-  T = MakeEmpty(T);
   for (i = 0; i < NUM_NODES; i++) {
     ElementType elem = random() % MAX_KEY + 1;
     T = Insert(elem, T);
