@@ -7,6 +7,18 @@
 
 #define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
 
+int RBT_Black_Height(RedBlackTree T) {
+  int black_height_esq = 0;
+  int black_height_dir = 0;
+  if (!isNullNode(T->Left))
+    black_height_esq = RBT_Black_Height(T->Left);
+  if (!isNullNode(T->Right))
+    black_height_dir = RBT_Black_Height(T->Right);
+  if (black_height_dir != black_height_esq)
+    printf("Error at node %d\n", T->Element);
+  return MAX(black_height_esq, black_height_dir) + T->Color == Black ? 1 : 0;
+}
+
 int RBT_Height(RedBlackTree T) {
   int height_esq = 0;
   int height_dir = 0;
@@ -53,11 +65,13 @@ int  main(int argc, char** argv) {
       case 2: {
         RedBlackTree P2 = genDegenerateRBT(num_nodes);
         printf("Altura da arvore: %d\n", RBT_Height(P2));
+        printf("Altura negra da arvore: %d\n", RBT_Black_Height(P2));
         break;
       }
       case 3: {
         RedBlackTree P3 = genRandomRBT(num_nodes, 5 * num_nodes);
         printf("Altura da arvore: %d\n", RBT_Height(P3));
+        printf("Altura negra da arvore: %d\n", RBT_Black_Height(P3));
         break;
       }
       default:

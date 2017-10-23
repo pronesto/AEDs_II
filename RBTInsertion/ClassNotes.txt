@@ -157,3 +157,37 @@ int Tree_Height(Apontador T) {
     height_dir = Tree_Height(T->Dir);
   return MAX(height_esq, height_dir) + 1;
 }
+
+
+? How would be a "driver", i.e., a program that invokes those two routines?
+
+int  main(int argc, char** argv) {
+  if (argc == 3) {
+    const int num_nodes = atoi(argv[1]);
+    const int tree_option = atoi(argv[2]);
+    switch(tree_option) {
+      case 0: {
+        Apontador P0 = genDegenerateTree(num_nodes);
+        printf("Altura da arvore: %d\n", Tree_Height(P0));
+        break;
+      }
+      case 1: {
+        Apontador P1 = genRandomTree(num_nodes, 5 * num_nodes);
+        printf("Altura da arvore: %d\n", Tree_Height(P1));
+        break;
+      }
+      case 2: {
+        RedBlackTree P2 = genDegenerateRBT(num_nodes);
+        printf("Altura da arvore: %d\n", RBT_Height(P2));
+        break;
+      }
+      case 3: {
+        RedBlackTree P3 = genRandomRBT(num_nodes, 5 * num_nodes);
+        printf("Altura da arvore: %d\n", RBT_Height(P3));
+        break;
+      }
+      default:
+        fprintf(stderr, "Unknown option: %d\n", tree_option);
+    }
+  }
+}

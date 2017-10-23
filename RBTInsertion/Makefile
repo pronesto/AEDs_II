@@ -15,6 +15,9 @@ OBJ_DOT = $(patsubst %,$(ODIR)/%,$(_OBJ_DOT))
 _OBJ_TIME = TimeTreeMain.o $(_OBJ)
 OBJ_TIME = $(patsubst %,$(ODIR)/%,$(_OBJ_TIME))
 
+_OBJ_HEIGHT = HeighTreeMain.o $(_OBJ)
+OBJ_HEIGHT = $(patsubst %,$(ODIR)/%,$(_OBJ_HEIGHT))
+
 $(ODIR)/%.o: %.c $(DEPS)
 	$(CC) -Wall -c -o $@ $< $(CFLAGS)
 
@@ -24,7 +27,10 @@ DotMain: $(OBJ_DOT)
 TimeTreeMain: $(OBJ_TIME)
 	$(CC) -Wall -o $@ $^ $(CFLAGS)
 
+HeightTreeMain: $(OBJ_HEIGHT)
+	$(CC) -Wall -o $@ $^ $(CFLAGS)
+
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o
+	rm -f $(ODIR)/*.o DotMain TimeTreeMain HeightTreeMain
