@@ -13,5 +13,5 @@ Algorithm to remove data from a tree. We also include a linear-time implementati
 ## RBTInsertion
 Algorithms to insert and manipulate data in a Red-Black Tree
 
-## RBTDeleition
+## RBTDeletion
 Links to videos showing the elimination of nodes from a Red-Black tree, plus the implementation of a number of bulk operations on Red-black Trees.
