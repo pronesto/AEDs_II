@@ -26,7 +26,7 @@ int main(int argc, char** argv) {
     fprintf(stderr, "Syntax: %s num_nodes\n", argv[0]);
   } else {
     const int num_nodes = atoi(argv[1]);
-    RedBlackTree T = genDegenerateRBT(num_nodes);
+    RedBlackTree T = genRandomRBT(num_nodes, 100);
     printDot(T);
   }
 }

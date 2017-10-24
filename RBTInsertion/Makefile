@@ -15,7 +15,7 @@ OBJ_DOT = $(patsubst %,$(ODIR)/%,$(_OBJ_DOT))
 _OBJ_TIME = TimeTreeMain.o $(_OBJ)
 OBJ_TIME = $(patsubst %,$(ODIR)/%,$(_OBJ_TIME))
 
-_OBJ_HEIGHT = HeighTreeMain.o $(_OBJ)
+_OBJ_HEIGHT = HeightTreeMain.o $(_OBJ)
 OBJ_HEIGHT = $(patsubst %,$(ODIR)/%,$(_OBJ_HEIGHT))
 
 $(ODIR)/%.o: %.c $(DEPS)

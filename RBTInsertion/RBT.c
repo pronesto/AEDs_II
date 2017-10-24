@@ -9,22 +9,24 @@ int isNullNode(RedBlackTree T) {
   return T == NullNode;
 }
 
+void makeNull(RedBlackTree T) {
+  T->Left = T->Right = NullNode;
+  T->Color = Black;
+  T->Element = NegInfinity;
+}
+
 /* Initialization procedure */
 RedBlackTree Initialize(void) {
   RedBlackTree T;
 
   if (NullNode == NULL) {
     NullNode = malloc(sizeof ( struct RedBlackNode));
-    NullNode->Left = NullNode->Right = NullNode;
-    NullNode->Color = Black;
-    NullNode->Element = NegInfinity;
+    makeNull(NullNode);
   }
 
   /* Create the header node */
   T = malloc(sizeof ( struct RedBlackNode));
-  T->Element = NegInfinity;
-  T->Left = T->Right = NullNode;
-  T->Color = Black;
+  makeNull(T);
 
   return T;
 }
@@ -122,8 +124,10 @@ RedBlackTree Insert(ElementType Item, RedBlackTree T) {
       HandleReorient(Item, T);
   }
 
-  if (X != NullNode)
+  if (X != NullNode) {
+    makeNull(NullNode);
     return T; /* Duplicate */
+  }
 
   X = malloc(sizeof(struct RedBlackNode));
   X->Element = Item;
@@ -136,6 +140,6 @@ RedBlackTree Insert(ElementType Item, RedBlackTree T) {
 
   HandleReorient(Item, T); /* Color it red; maybe rotate */
 
-  NullNode->Element = NegInfinity;
+  makeNull(NullNode);
   return T;
 }

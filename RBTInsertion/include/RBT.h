@@ -45,6 +45,12 @@ RedBlackTree Insert(ElementType X, RedBlackTree T);
  */
 void Central_RBT_Header(RedBlackTree T, void (*visitor)(RedBlackTree));
 
+/*
+ * This function tells if a node is the leaf node used as a sentinel in the
+ * Red-Black Tree.
+ * @param T: the node that we are querying.
+ * @return true if T is the null node.
+ */
 int isNullNode(RedBlackTree T);
  
 #endif

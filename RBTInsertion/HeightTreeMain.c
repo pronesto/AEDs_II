@@ -7,16 +7,24 @@
 
 #define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
 
+void print(RedBlackTree T) {
+  printf("Node(%p) = %d [%c]\n", T, T->Element, T->Color == Black ? 'b' : 'r');
+}
+
 int RBT_Black_Height(RedBlackTree T) {
-  int black_height_esq = 0;
-  int black_height_dir = 0;
-  if (!isNullNode(T->Left))
-    black_height_esq = RBT_Black_Height(T->Left);
-  if (!isNullNode(T->Right))
-    black_height_dir = RBT_Black_Height(T->Right);
-  if (black_height_dir != black_height_esq)
-    printf("Error at node %d\n", T->Element);
-  return MAX(black_height_esq, black_height_dir) + T->Color == Black ? 1 : 0;
+  if (isNullNode(T)) {
+    return 0;
+  } else {
+    int black_height_esq = RBT_Black_Height(T->Left);
+    int black_height_dir = RBT_Black_Height(T->Right);
+    // We check if T is not the Root (Element == NegInfinity)
+    if (T->Element != NegInfinity && black_height_dir != black_height_esq) {
+      printf("Error at node %d (%d vs %d)\n",
+          T->Element, black_height_esq, black_height_dir);
+    }
+    return MAX(black_height_esq, black_height_dir) +
+      (T->Color == Black ? 1 : 0);
+  }
 }
 
 int RBT_Height(RedBlackTree T) {
@@ -37,10 +45,6 @@ int Tree_Height(Apontador T) {
   if (T->Dir)
     height_dir = Tree_Height(T->Dir);
   return MAX(height_esq, height_dir) + 1;
-}
-
-void print(ElementType e) {
-  printf("%d\n", e);
 }
 
 int  main(int argc, char** argv) {
