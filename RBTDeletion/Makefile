@@ -10,8 +10,11 @@ DEPS   = Set.h
 ArraySet: CompSetMain.o ArraySet.o
 	$(CC) -Wall -o ArraySet CompSetMain.o ArraySet.o -I.
 
-SortedArraySet: CompSetMain.o SortedArraySet.o
-	$(CC) -Wall -o SortedArraySet CompSetMain.o SortedArraySet.o -I.
+IsortArraySet: CompSetMain.o IsortArraySet.o
+	$(CC) -Wall -o IsortArraySet CompSetMain.o IsortArraySet.o -I.
+
+QsortArraySet: CompSetMain.o QsortArraySet.o
+	$(CC) -Wall -o QsortArraySet CompSetMain.o QsortArraySet.o -I.
 
 TreeMain: CompSetMain.o TreeSet.o
 	$(CC) -Wall -o ArraySet CompSetMain.o TreeSet.o -I.
@@ -19,4 +22,4 @@ TreeMain: CompSetMain.o TreeSet.o
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o ArraySet SortedArraySet TreeMain
+	rm -f $(ODIR)/*.o ArraySet IsortArraySet QsortArraySet TreeMain
