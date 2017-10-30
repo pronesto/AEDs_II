@@ -7,20 +7,26 @@
   - One student wants to find his grade.
   - Professors wants to find the entries of several students.
 
+
 ? What do these scenarios have in common?
 - There is no change in the database.
+
 
 ? What are the differences between them?
 - Number of searches.
 
+
 ? Now, consider the following system. How would you implement it?
 - The decolar.com website. I want to find a particular flight, with two sits available.
+
 
 ? How is this system different than the previous ones?
 - Scale.
 - Dynamic updates.
 
+
 ? Now, consider finding the first occurrence of a particular character in a string. How would you implement that?
+
 
 * Different programming languages provide different data-structures in which we can carry out searches.
 
@@ -53,6 +59,7 @@ scala> m("Fernando")
 java.util.NoSuchElementException: key not found: Fernando
   at scala.collection.MapLike$class.default(MapLike.scala:
 
+
 * Sequential Search
 
 ? Which datatypes would you use to implement sequential search?
@@ -72,13 +79,16 @@ typedef struct {
   Indice n;
 } Tabela;
 
+
 ? Should you use an array, or a linked list? What are the advantages and
 disadvantages of each data-structure?
+
 
 ? How would be the code to initialize "Tabela*"?
 void Inicializa(Tabela *T) {
   T->n = 0;
 }
+
 
 ? How would be the search?
 Indice Pesquisa(TipoChave x, Tabela *T){
@@ -91,7 +101,9 @@ Indice Pesquisa(TipoChave x, Tabela *T){
   return i;
 }
 
+
 ? What if I can't find the element? What do I return?
+
   
 ? How would be the insertion?
 void Insere(Registro Reg, Tabela *T) {
@@ -103,7 +115,9 @@ void Insere(Registro Reg, Tabela *T) {
   }
 } 
 
+
 ? Is it possible to use the first index of the data-structure?
+
 
 ? How would be the removal of keys?    
 void Remove(TipoChave x, Tabela *T) {
@@ -111,6 +125,7 @@ void Remove(TipoChave x, Tabela *T) {
   if (idx != 0) 
     T->Item[idx] = T->Item[T->n--];
 }
+
 
 ? Design some code to test this ADT:
 #define MAX_KEY 100
@@ -138,6 +153,7 @@ int main() {
   }
   printf("\nDone!\n");
 }
+
 
 ? This code has a bug. Can you spot it?
 ? How to fix the bug?
