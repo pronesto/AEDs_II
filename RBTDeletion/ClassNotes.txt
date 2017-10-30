@@ -1,0 +1,269 @@
+* The definition of trees
+
+
+? What are the essential elements of a binary tree?
+
+- An element E is a tree, called a "Leaf"
+- If T1 and T2 are trees, then an Element E, plus T1 and T2 are a tree.
+
+
+? What are the essential elements of a binary search tree?
+
+- An element E is a tree, called a "Leaf"
+- If T1 and T2 are trees, then an Element E, plus T1 and T2 are a tree, and:
+  - for every E1 in T1, E1 < E
+  - for every E2 in T2, E2 > E2
+
+
+? Can we have repeated elements in a binary search tree?
+
+
+? What are the essential elements of a red-black tree?
+
+- An element E is a tree, called a "Leaf"
+  - E is Red or Black
+- If T1 and T2 are trees, then an Element E, plus T1 and T2 are a tree, and:
+  - for every E1 in T1, E1 < E
+  - for every E2 in T2, E2 > E2
+  - E is Red or Black
+  - The number of Black elements on any path from E till a Leaf is the same
+  - If E is Red, then its children are black.
+
+
+* The deletion of nodes in the Red-Black tree
+
+- Video 1
+- Video 2
+
+
+* Abstract Data Types Revisited
+
+? What is an Abstract Data Type
+- A type defined in terms of its properties
+
+? Why is it not concrete?
+- Because the actual implementation of these properties is not important.
+- That is the meaning of this verb: "abstract", e.g., reduce or remove the
+  unwanted complexity.
+
+
+* Example: the Set abstract data type.
+
+? How can you define the signature of a set datatype?
+typedef struct set_concrete* Set;
+
+
+? What are the essential properties of a set?
+void initialize(Set* s);
+void insert(Set s, int i);
+int contains(Set s, int i);
+void close(Set s);
+
+
+? How is a program that uses this data-type?
+
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "Set.h"
+int nextKey(const int MAX_VAL_KEY) {
+  return random() % MAX_VAL_KEY + 1;
+}
+int main(int argc, char** argv) {
+  if (argc != 3) {
+    fprintf(stderr, "Syntax: %s <max_num_keys> <max_val_key>\n", argv[0]);
+    return 1;
+  } else {
+    clock_t start, end;
+    const int MAX_NUM_KEYS = atoi(argv[1]);
+    const int MAX_VAL_KEY = atoi(argv[2]);
+    Set s;
+
+    start = clock();
+    //
+    // Initialize the Set datatype:
+    initialize(&s);
+    //
+    // Insert elements in the set:
+    for (int i = 0; i < MAX_NUM_KEYS; i++) {
+      int key = nextKey(MAX_VAL_KEY);
+      printf("%8d", key);
+      insert(s, key);
+    }
+    printf("\nDone Inserting\n");
+    //
+    // Search for elements in the set:
+    int num_hits = 0;
+    for (int i = 0; i < MAX_NUM_KEYS; i++) {
+      if (contains(s, i))
+        num_hits++;
+    }
+    printf("Done Searching\n");
+    //
+    // Close the set:
+    close(s);
+    //
+    // Print final result: time and number of elements found:
+    end = clock();
+    fprintf(stderr, "Time = %lf\n", ((double)(end - start))/CLOCKS_PER_SEC);
+    printf("Number of hits = %d\n", num_hits);
+  }
+}
+
+
+? How can you implement a set?
+
+* Example: Sets as arrays:
+
+? How would be the implementation of the Set type using an array?
+
+struct set_concrete {
+  int* array;
+  int capacity;
+  int counter;
+};
+
+
+? How would be the code that initializes the array?
+
+#define INIT_CAPACITY 1024
+
+void initialize(Set* s) {
+  *s = (Set)malloc(sizeof(struct set_concrete));
+  (*s)->array = (int*)malloc(INIT_CAPACITY * sizeof(int));
+  (*s)->capacity = INIT_CAPACITY;
+  (*s)->counter = 0;
+}
+
+
+? Implement the code that inserts in the array:
+
+void insert(Set s, int element) {
+  s->array[s->counter++] = element;
+}
+
+
+? Can you handle the situation when you go above the capacity of the array?
+
+void insert(Set s, int element) {
+  if (s->counter >= s->capacity) {
+    s->capacity *= 2;
+    int* aux = (int*)malloc(s->capacity * sizeof(int));
+    memcpy(aux, s->array, sizeof(int) * s->capacity);
+    free(s->array);
+    s->array = aux;
+  }
+  s->array[s->counter++] = element;
+}
+
+
+? How's the 'contains' method?
+
+int contains(Set s, int element) {
+  for (int i = 0; i < s->counter; i++) {
+    if (s->array[i] == element) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
+
+? And the 'close' procedure?
+
+void close(Set s) {
+  free(s->array);
+  free(s);
+}
+
+
+* Sorted Array.
+
+? Would it be possible to sort the array, and then do binary search to find the
+  nodes that you want?
+  - When would you sort the array?
+  - Which new information would you need to do that?
+
+? Design a new type signature for the sorted array data type:
+
+struct set_concrete {
+  int* array;
+  int capacity;
+  int counter;
+  int sorted;
+};
+
+
+? Sort the array whenever: it is not sorted, and you try to search it:
+  - When would the array stop being sorted?
+
+void insert(Set s, int element) {
+  if (s->counter >= s->capacity) {
+    s->capacity *= 2;
+    int* aux = (int*)malloc(s->capacity * sizeof(int));
+    memcpy(aux, s->array, sizeof(int) * s->capacity);
+    free(s->array);
+    s->array = aux;
+  }
+  s->array[s->counter++] = element;
+  s->sorted = 0;
+}
+
+
+? When would it become sorted?
+
+int contains(Set s, int element) {
+  if (!s->sorted) {
+    sort(s->array, s->counter);
+    s->sorted = 1;
+  }
+  return binSearch(element, s->array, s->counter);
+}
+
+
+? Which sort method could you use?
+
+void sort(int* array, int N) {
+  int i, j;
+  for (i = 0; i < N - 1; i++) {
+    for (j = i+1; j < N; j++) {
+      if (array[i] > array[j]) {
+        int tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+      }
+    }
+  }
+}
+
+
+? Could you think about a better sorting algorithm?
+
+void swap(int* a, int* b) {
+    int t = *a;
+    *a = *b;
+    *b = t;
+}
+
+int partition (int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = (low - 1);
+ 
+    for (int j = low; j <= high- 1; j++) {
+        if (arr[j] <= pivot) {
+            i++;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+ 
+void quickSort(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
