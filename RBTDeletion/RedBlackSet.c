@@ -1,4 +1,10 @@
-#include <stdio.h>
+/*
+ * This file implements a set as a red-black tree.
+ *
+ * author: fernando@dcc.ufmg.br
+ * Date: October 31st, 2017
+ */
+
 #include <stdlib.h>
 
 #include "Set.h"

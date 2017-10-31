@@ -28,7 +28,6 @@ int main(int argc, char** argv) {
       int key = nextKey(MAX_VAL_KEY);
       insert(s, key);
     }
-    printf("Done Inserting\n");
     //
     // Search for elements in the set:
     int num_hits = 0;
@@ -36,14 +35,12 @@ int main(int argc, char** argv) {
       if (contains(s, i))
         num_hits++;
     }
-    printf("Done Searching\n");
     //
     // Close the set:
     close(s);
     //
     // Print final result: time and number of elements found:
     end = clock();
-    fprintf(stderr, "Time = %lf\n", ((double)(end - start))/CLOCKS_PER_SEC);
-    printf("Number of hits = %d\n", num_hits);
+    printf("%lf, %d\n", ((double)(end - start))/CLOCKS_PER_SEC, num_hits);
   }
 }
