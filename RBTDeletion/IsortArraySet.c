@@ -1,3 +1,14 @@
+/*
+ * This file implements a Set datatype, using a sorted array to this end.
+ * We sort the array whenever we must answer a 'contains' query. We keep the
+ * status of the array (sorted or not), and only sort it if it was not sorted
+ * before. The array goes from sorted to unsorted whenever we insert something
+ * into the set. We use insertion sort to sort, and binary search to search. 
+ *
+ * Author: fernando@dcc.ufmg.br
+ * Date: October 31st, 2017
+ */
+
 #include <string.h>
 #include <stdlib.h>
 
