@@ -1,13 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "Set.h"
 #include "RBT.h"
 
 struct set_concrete {
-  RedBlackNode T;
+  RedBlackTree T;
 };
 
 void initialize(Set* s) {
-  Initialize();
-  MakeEmpty(s->T);
+  *s = (Set)malloc(sizeof(struct set_concrete));
+  (*s)->T = Initialize();
 }
 
 void insert(Set s, int i) {

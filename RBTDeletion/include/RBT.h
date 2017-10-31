@@ -43,7 +43,7 @@ RedBlackTree Insert(ElementType X, RedBlackTree T);
  * @param T: the tree that is being searched.
  * @return 1 if X is in T, and 0 otherwise.
  */
-int Contains(ElementType X, RedBlackTree T) {
+int Contains(ElementType X, RedBlackTree T);
  
 /*
  * Traverses the tree in central order.
