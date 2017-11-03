@@ -1,0 +1,63 @@
+* Hash tables
+  - In the last class, we saw how to produce a Set data type. The fastest
+    implementations were based on red-black trees, or on the sorted array,
+    sorted with quicksort.
+
+
+? Would it be possible to have an implementation with faster access times than
+  O(log n)? It would beat the red-black tree and the quicksort implementations.
+  - Yes: we can try direct indexing, via an array.
+
+
+? Could you re-implement the set with an array, using direct indexing?
+
+#include <string.h>
+#include <limits.h>
+#include <stdlib.h>
+#include "Set.h"
+struct set_concrete {
+  unsigned* array;
+};
+void initialize(Set* s) {
+  *s = (Set)malloc(sizeof(struct set_concrete));
+  (*s)->array = (unsigned*)calloc(UINT_MAX, sizeof(unsigned));
+}
+void insert(Set s, Key element) {
+  s->array[(unsigned)element] = 1;
+}
+int contains(Set s, Key element) {
+  unsigned index = element;
+  return s->array[index];
+}
+void close(Set s) {
+  free(s->array);
+  free(s);
+}
+
+
+? Are there larger scalar types than 'unsigned int'?
+  - long
+  - long long
+
+
+? How can I find out the value of the upper bounds of such types?
+
+#include <stdio.h>
+#include <limits.h>
+int main() {
+  printf("%d\n", INT_MAX);
+  printf("%u\n", UINT_MAX);
+  printf("%lu\n", ULONG_MAX);
+}
+
+
+? What would happen with our BitSet, if I had tried to use ULONG_MAX as the
+  size of the bit array?
+
+BitArraySet(5269,0x7fff77972310) malloc: *** mach_vm_map(size=2305843009213693952) failed (error code=3)
+*** error: can't allocate region
+*** set a breakpoint in malloc_error_break to debug
+Segmentation fault: 11
+
+
+? How can we still deal with keys of the 'long' type?
