@@ -6,7 +6,6 @@
  * Date: November 3rd, 2017
  */
 
-#include <stdio.h>
 #include <stdlib.h>
 
 #include "Set.h"
@@ -21,7 +20,7 @@ struct set_concrete {
   size_t size;
 };
 
-#define TABLE_SIZE 0xF
+#define TABLE_SIZE 0xFFFF
 
 void initialize(Set* s) {
   *s = (Set)malloc(sizeof(struct set_concrete));
@@ -43,7 +42,6 @@ void insert(Set s, Key element) {
 
 int contains(Set s, Key element) {
   size_t h = hash(element);
-  printf("Looking for %d in table[%lu]\n", element, h);
   if (s->table[h]) {
     struct node *it = s->table[h];
     while (it) {

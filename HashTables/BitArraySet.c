@@ -13,8 +13,7 @@
 #include "Set.h"
 
 #define WORD_SIZE  (8*sizeof(unsigned))
-//#define ARRAY_SIZE (UINT_MAX/WORD_SIZE)
-#define ARRAY_SIZE (ULLONG_MAX/WORD_SIZE)
+#define ARRAY_SIZE (UINT_MAX/WORD_SIZE)
 
 struct set_concrete {
   unsigned* array;
