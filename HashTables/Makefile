@@ -13,6 +13,9 @@ IntArraySet: CompSetMain.o IntArraySet.o
 BitArraySet: CompSetMain.o BitArraySet.o
 	$(CC) -Wall -o BitArraySet CompSetMain.o BitArraySet.o -I.
 
+HashSet: CompSetMain.o HashSet.o
+	$(CC) -Wall -o HashSet CompSetMain.o HashSet.o -I.
+
 .PHONY: clean
 
 clean:
