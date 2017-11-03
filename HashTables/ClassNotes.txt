@@ -152,3 +152,157 @@ Segmentation fault: 11
 
 
 ? How can we still deal with keys of the 'long' type?
+
+
+? Which kind of structures would you think about to build a hash table?
+
+
+? What are the types that implement a hash table with separate chaining?
+
+struct node {
+  Key key;
+  struct node *next;
+};
+
+struct set_concrete {
+  struct node **table;
+  size_t size;
+};
+
+
+? How would you initialize this data structure?
+
+#define TABLE_SIZE 0xFFFF
+
+void initialize(Set* s) {
+  *s = (Set)malloc(sizeof(struct set_concrete));
+  (*s)->table = (struct node**)calloc(TABLE_SIZE + 1, sizeof(struct node*));
+}
+
+
+? And how would you delete this data structure?
+
+void close(Set s) {
+  for (int i = 0; i < TABLE_SIZE; i++) {
+    struct node *j = s->table[i];
+    while (j) {
+      struct node *aux = j;
+      j = j->next;
+      free(aux);
+    }
+  }
+  free(s->table);
+  free(s);
+}
+
+
+? What would happened if you remove the 'for' loop in the 'close' routine?
+
+$> valgrind ./HashSet 10000 10000
+==46852== LEAK SUMMARY:
+==46852==    definitely lost: 100,752 bytes in 6,297 blocks
+==46852==    indirectly lost: 59,248 bytes in 3,703 blocks
+
+
+? Can you now implement the 'insert' function?
+
+size_t hash(Key element) {
+  return element & TABLE_SIZE;
+}
+
+void insert(Set s, Key element) {
+  struct node* it;
+  size_t h = hash(element);
+  it = malloc(sizeof *it);
+  it->key = element;
+  it->next = s->table[h];
+  s->table[h] = it;
+}
+
+
+? What about the 'contains' function?
+
+int contains(Set s, Key element) {
+  size_t h = hash(element);
+  if (s->table[h]) {
+    struct node *it = s->table[h];
+    while (it) {
+      if (it->key == element)
+        return 1;
+      else
+        it = it->next;
+    }
+  }
+  return 0;
+}
+
+
+? Can you compare the runtime of the Hash Table with different sizes of the
+  table?
+  - See timeSet.xlsx
+
+
+? Is the number of cells in the table the same as the number of elements we
+  have inserted?
+
+
+? Could you give me some data about the tables?
+  - What is the average size of the lists?
+  - What is the number of cells in the lists?
+  - What is the size of the largest list?
+  - What about the size of the smallest list?
+
+void close(Set s) {
+  int num_cells = 0;
+  int max_cells = 0;
+  int min_cells =INT_MAX;
+  for (int i = 0; i < TABLE_SIZE; i++) {
+    int counter = 0;
+    struct node *j = s->table[i];
+    while (j) {
+      struct node *aux = j;
+      j = j->next;
+      free(aux);
+      counter++;
+    }
+    if (counter > max_cells)
+      max_cells = counter;
+    if (counter < min_cells)
+      min_cells = counter;
+    num_cells += counter;
+  }
+  free(s->table);
+  free(s);
+  printf("\nTable size = %d\nNum Cells = %d, \nAvg size = %lf\nMax list = %d\nMin list = %d\n",
+      TABLE_SIZE, num_cells, ((double)num_cells)/TABLE_SIZE, max_cells, min_cells);
+}
+
+
+? Could you modify the hash table, so that it removes duplicates?
+
+void insert(Set s, Key element) {
+  struct node* it;
+  size_t h = hash(element);
+  if (!contains(s, element)) {
+    it = malloc(sizeof *it);
+    it->key = element;
+    it->next = s->table[h];
+    s->table[h] = it;
+  }
+}
+
+
+? How do they fare, in terms of time?
+
+hst_sort, neq_sort
+0.000949, 0.001044
+0.002682, 0.002769
+0.004658, 0.003981
+0.008095, 0.008028
+0.008394, 0.007184
+0.011385, 0.008426
+0.012236, 0.010184
+0.024452, 0.012113
+0.019481, 0.017243
+0.023524, 0.016220
+0.024059, 0.026700

@@ -38,3 +38,9 @@ for ((num_nodes = $min_nodes; num_nodes < $max_nodes; num_nodes += $stp_nodes))
 do
   ./HashSet $num_nodes $num_nodes ;
 done
+
+echo "neq_sort, Time (s)"
+for ((num_nodes = $min_nodes; num_nodes < $max_nodes; num_nodes += $stp_nodes))
+do
+  ./NoEqualHashSet $num_nodes $num_nodes ;
+done

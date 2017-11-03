@@ -36,10 +36,12 @@ size_t hash(Key element) {
 void insert(Set s, Key element) {
   struct node* it;
   size_t h = hash(element);
-  it = malloc(sizeof *it);
-  it->key = element;
-  it->next = s->table[h];
-  s->table[h] = it;
+  if (!contains(s, element)) {
+    it = malloc(sizeof *it);
+    it->key = element;
+    it->next = s->table[h];
+    s->table[h] = it;
+  }
 }
 
 int contains(Set s, Key element) {
@@ -57,14 +59,29 @@ int contains(Set s, Key element) {
 }
 
 void close(Set s) {
+  int num_cells = 0;
+  int max_cells = 0;
+  int min_cells =INT_MAX;
+  int num_emptys = 0;
   for (int i = 0; i < TABLE_SIZE; i++) {
+    int counter = 0;
     struct node *j = s->table[i];
+    if (!j)
+      num_emptys++;
     while (j) {
       struct node *aux = j;
       j = j->next;
       free(aux);
+      counter++;
     }
+    if (counter > max_cells)
+      max_cells = counter;
+    if (counter < min_cells)
+      min_cells = counter;
+    num_cells += counter;
   }
   free(s->table);
   free(s);
+  printf("\nTable size = %d\nNum Cells = %d\nNum empty cells = %d\nAvg size = %lf\nMax list = %d\nMin list = %d\n",
+      TABLE_SIZE, num_cells, num_emptys, ((double)num_cells)/TABLE_SIZE, max_cells, min_cells);
 }

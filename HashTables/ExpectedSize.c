@@ -8,12 +8,12 @@ int main(int argc, char** argv) {
   } else {
     const int TBL_SIZE = atoi(argv[1]);
     const int NUM_KEYS = atoi(argv[2]);
-    double num_elem = 0.0;
+    double num_empties = (double)TBL_SIZE;
     for (double i = 0.0; i < NUM_KEYS; i++) {
-      num_elem += i/TBL_SIZE;
+      num_empties *= (1.0 - 1.0/TBL_SIZE);
     }
-    printf("\nTable size = %d\nNum keys = %d\nExpected count = %lf\n",
-        TBL_SIZE, NUM_KEYS, num_elem);
+    printf("\nTable size = %d\nNum keys = %d\nExpected empties = %lf\n",
+        TBL_SIZE, NUM_KEYS, num_empties);
     return 0;
   }
 }
