@@ -238,8 +238,8 @@ $> open file.dot
 
 % The accumulator vs the functional tree-traversal %%%%%%%%%%%%%%%
 
-
 ? Write some code to determine the number of leaves in the tree:
+
 int numLeaves;
 
 void getNumLeaves_aux(Apontador p) {
@@ -261,6 +261,7 @@ int main() {
   printf("\nNum leaves = %d\n", getNumLeavesAcc(D));
   ...
 }
+
 
 ? Could you re-write this program, so that the number of leaves is returned by
   the visitor?
