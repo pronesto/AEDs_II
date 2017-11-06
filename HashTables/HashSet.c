@@ -1,6 +1,7 @@
 /*
- * This file implements a Set datatype, using an integer array to index the
- * elements. 
+ * This file implements a Set datatype, using a hash table with separate
+ * chaining. Items that collidate are placed onto a linked list. 
+ * We allow duplicate items per list.
  *
  * Author: fernando@dcc.ufmg.br
  * Date: November 3rd, 2017

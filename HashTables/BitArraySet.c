@@ -1,6 +1,6 @@
 /*
- * This file implements a Set datatype, using an integer array to index the
- * elements. 
+ * This file implements a Set datatype using a bitmap. The largest integer that
+ * we can track is largest long.
  *
  * Author: fernando@dcc.ufmg.br
  * Date: November 3rd, 2017

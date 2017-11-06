@@ -1,6 +1,6 @@
 /*
- * This file implements a Set datatype, using an integer array to index the
- * elements. 
+ * This file implements a set of integers using a hash table. The only
+ * difference to HashSet is that we do not allow duplicates in this case.
  *
  * Author: fernando@dcc.ufmg.br
  * Date: November 3rd, 2017
