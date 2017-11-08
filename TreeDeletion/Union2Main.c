@@ -16,6 +16,21 @@ int* tree2array(Apontador p, int size) {
   return V;
 }
 
+// Prints the trees in dot format:
+//
+void printDot_aux(Apontador p) {
+  if (p->Esq)
+    printf("  %d -> %d\n", p->Reg.Chave, p->Esq->Reg.Chave);
+  if (p->Dir)
+    printf("  %d -> %d\n", p->Reg.Chave, p->Dir->Reg.Chave);
+}
+
+void printDot(Apontador p) {
+  printf("\ndigraph tree {\n");
+  Central(p, &printDot_aux);
+  printf("\n}\n");
+}
+
 // Prints the tree:
 //
 void visita(Apontador p) {
@@ -89,12 +104,6 @@ int main(int argc, char** argv) {
     int size_tree2 = 0;
     Apontador T2 = createTree(atoi(argv[1]), &size_tree2);
 
-    // Pretty prints the trees:
-    printf("\nPre-Order in T1:\n");
-    Central(T1, &visita);
-    printf("\nPre-Order in T2:\n");
-    Central(T2, &visita);
-
     // Flatten the trees into an array:
     int* A1 = tree2array(T1, size_tree1);
     int* A2 = tree2array(T2, size_tree2);
@@ -105,7 +114,10 @@ int main(int argc, char** argv) {
 
     // Transform the merged array back into a tree
     Apontador TM = array2tree(AM, 0, size_treeM - 1);
-    printf("\nPre-Order of the new tree T:\n");
-    Central(TM, &visita);
+
+    // Pretty prints the trees:
+    printDot(T1);
+    printDot(T2);
+    printDot(TM);
   }
 }

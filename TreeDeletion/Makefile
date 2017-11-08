@@ -24,4 +24,4 @@ Union2Main: $(OBJ_UN2)
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o DelMain
+	rm -f $(ODIR)/*.o DelMain Union2Main
