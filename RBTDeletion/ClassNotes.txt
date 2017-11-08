@@ -32,14 +32,15 @@
 
 * The deletion of nodes in the Red-Black tree
 
-- Video 1
-- Video 2
+- Deletion patterns: https://www.youtube.com/watch?v=cN1xHXdvDRI
+- Example: https://www.youtube.com/watch?v=qplLwNxCVOM&t=
 
 
 * Abstract Data Types Revisited
 
 ? What is an Abstract Data Type
 - A type defined in terms of its properties
+
 
 ? Why is it not concrete?
 - Because the actual implementation of these properties is not important.
@@ -112,6 +113,15 @@ int main(int argc, char** argv) {
 }
 
 
+? Can you write a make file for this program?
+  - Can you do anything without the actual implementation of the c file?
+
+clang -c CompSetMain.c -Iinclude/ -o CompSetMain.o
+
+
+? What is the -Iinclude tag doing?
+
+
 ? How can you implement a set?
 
 * Example: Sets as arrays:
@@ -123,6 +133,11 @@ struct set_concrete {
   int capacity;
   int counter;
 };
+
+
+? How could we ensure encapsulation in C?
+- typedef in header file
+- implementation in c file
 
 
 ? How would be the code that initializes the array?
@@ -178,12 +193,17 @@ void close(Set s) {
 }
 
 
+? What is the complexity of insert and contains?
+- O(n), where n is the number of elements in the set
+
+
 * Sorted Array.
 
 ? Would it be possible to sort the array, and then do binary search to find the
   nodes that you want?
   - When would you sort the array?
   - Which new information would you need to do that?
+
 
 ? Design a new type signature for the sorted array data type:
 
@@ -266,4 +286,36 @@ void sort(int arr[], const int low, const int high) {
     sort(arr, low, pi - 1);
     sort(arr, pi + 1, high);
   }
+}
+
+
+* Set based on a Red-Black tree
+
+? Could you implement the set using a red-black tree?
+  ? How would be the declaration of types?
+
+struct set_concrete {
+  RedBlackTree T;
+};
+
+
+? How would be the initialize operation?
+
+void initialize(Set* s) {
+  *s = (Set)malloc(sizeof(struct set_concrete));
+  (*s)->T = Initialize();
+}
+
+
+? And the contains operation?
+
+int contains(Set s, int i) {
+  return Contains(i, s->T);
+}
+
+
+? And the close operation?
+
+void close(Set s) {
+  MakeEmpty(s->T);
 }

@@ -16,19 +16,23 @@ int* tree2array(Apontador p, int size) {
   return V;
 }
 
-// Prints the trees in dot format:
+// Prints the trees in dot format into file:
 //
+FILE *file;
+
 void printDot_aux(Apontador p) {
   if (p->Esq)
-    printf("  %d -> %d\n", p->Reg.Chave, p->Esq->Reg.Chave);
+    fprintf(file, "  %d -> %d\n", p->Reg.Chave, p->Esq->Reg.Chave);
   if (p->Dir)
-    printf("  %d -> %d\n", p->Reg.Chave, p->Dir->Reg.Chave);
+    fprintf(file, "  %d -> %d\n", p->Reg.Chave, p->Dir->Reg.Chave);
 }
 
-void printDot(Apontador p) {
-  printf("\ndigraph tree {\n");
+void printDot(Apontador p, const char* file_name) {
+  file = fopen(file_name, "w");
+  fprintf(file, "\ndigraph tree {\n");
   Central(p, &printDot_aux);
-  printf("\n}\n");
+  fprintf(file, "\n}\n");
+  fclose(file);
 }
 
 // Prints the tree:
@@ -116,8 +120,8 @@ int main(int argc, char** argv) {
     Apontador TM = array2tree(AM, 0, size_treeM - 1);
 
     // Pretty prints the trees:
-    printDot(T1);
-    printDot(T2);
-    printDot(TM);
+    printDot(T1, "T1.dot");
+    printDot(T2, "T2.dot");
+    printDot(TM, "TM.dot");
   }
 }
