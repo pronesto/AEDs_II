@@ -63,14 +63,17 @@ Apontador insereR(Apontador t, Registro *reg, int p) {
   int chave = reg->chave;
   if (t == NULL)
     return cria_trie(reg);
-  if (t->esq == NULL && t->dir == NULL) {
+  else if (t->reg && t->reg->chave == reg->chave)
+    return t;
+  else if (t->esq == NULL && t->dir == NULL)
     return separa(cria_trie(reg), t, p);
+  else {
+    if (digito(chave, p) == 0)
+      t->esq = insereR(t->esq, reg, p+1);
+    else
+      t->dir = insereR(t->dir, reg, p+1);
+    return t;
   }
-  if (digito(chave, p) == 0)
-    t->esq = insereR(t->esq, reg, p+1);
-  else
-    t->dir = insereR(t->dir, reg, p+1);
-  return t;
 }
 
 void insere(Apontador *trie, Registro *reg) {
@@ -83,4 +86,11 @@ void MakeEmpty(Apontador t) {
     MakeEmpty(t->dir);
     free(t);
   }
+}
+
+void Central(Apontador p, void (*visitante)(Apontador p)) {
+  if (p == NULL) return;
+  Central(p->esq, visitante);
+  (*visitante)(p);
+  Central(p->dir, visitante);
 }

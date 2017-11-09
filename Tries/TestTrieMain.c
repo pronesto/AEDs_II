@@ -4,12 +4,24 @@
 #include "Trie.h"
 
 /*
- * Auxiliary function used in a tree traversal that prints key information for
- * all the keys in the tree.
+ * Prints the tree in dot format, using the auxiliary function printDot_aux.
  */
-void visita(Apontador p) {
-  printf("Key = %8d, Dir? = %d, Esq? = %d\n", p->reg->chave, p->dir != NULL,
-      p->esq != NULL);
+void printDot_aux(Apontador p) {
+  if (!(p->reg)) {
+    printf("  %lu [shape = point];\n", (long)p);
+  } else {
+    printf("  %lu [label = %d];\n", (long)p, p->reg->chave);
+  }
+  if (p->esq)
+    printf("  %lu -> %lu [label = 0]\n", (long)p, (long)p->esq);
+  if (p->dir)
+    printf("  %lu -> %lu [label = 1]\n", (long)p, (long)p->dir);
+}
+
+void printDot(Apontador p) {
+  printf("\ndigraph tree {\n");
+  Central(p, &printDot_aux);
+  printf("\n}\n");
 }
 
 int gen(const int MAX_KEY) {
@@ -32,7 +44,7 @@ int main(int argc, char** argv) {
       Registro *reg = (Registro*) malloc(sizeof(Registro));
       reg->chave = gen(16);
       insere(&trie, reg);
-      printf("%4d", reg->chave);
+      printDot(trie);
     }
     printf("\n");
     //
@@ -45,5 +57,6 @@ int main(int argc, char** argv) {
       else
         printf("%4d%4s", i, "-");
     }
+    printf("\n");
   }
 }

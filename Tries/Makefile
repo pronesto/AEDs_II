@@ -1,6 +1,6 @@
 IDIR   = include
 CC     = clang
-CFLAGS = -I$(IDIR)
+CFLAGS = -g -I$(IDIR)
 
 DEPS   = Set.h Trie.h
 
