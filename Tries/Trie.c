@@ -1,6 +1,31 @@
 #include <stdlib.h>
 
-#include "Trie.h"
+#include "Tree.h"
+
+struct No {
+  Apontador esq;
+  Apontador dir;
+  Registro *reg;
+};
+
+Registro* getReg(Apontador p) {
+  return p->reg;
+}
+
+Apontador getEsq(Apontador p) {
+  return p->esq;
+}
+
+Apontador getDir(Apontador p) {
+  return p->dir;
+}
+
+void Central(Apontador p, void (*visitante)(Apontador p)) {
+  if (p == NULL) return;
+  Central(p->esq, visitante);
+  (*visitante)(p);
+  Central(p->dir, visitante);
+}
 
 void inicializa(Apontador *trie) {
   *trie = NULL;
@@ -86,11 +111,4 @@ void MakeEmpty(Apontador t) {
     MakeEmpty(t->dir);
     free(t);
   }
-}
-
-void Central(Apontador p, void (*visitante)(Apontador p)) {
-  if (p == NULL) return;
-  Central(p->esq, visitante);
-  (*visitante)(p);
-  Central(p->dir, visitante);
 }
