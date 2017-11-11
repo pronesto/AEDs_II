@@ -49,7 +49,7 @@ Registro* pesquisa(Apontador p, int chave) {
 void makeNull(Apontador T) {
   T->esq = T->dir = NullNode;
   T->color = Black;
-  T->reg = NULL;
+  T->reg = (Registro*)malloc(sizeof(Registro));
 }
 
 void inicializa(Apontador *p) {
