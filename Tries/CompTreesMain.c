@@ -10,8 +10,8 @@
 int get_height(Apontador p) {
   Apontador esq_p = getEsq(p);
   Apontador dir_p = getDir(p);
-  int esq_height = esq_p ? get_height(esq_p) : 0;
-  int dir_height = dir_p ? get_height(dir_p) : 0;
+  int esq_height = esq_p && esq_p != p ? get_height(esq_p) : 0;
+  int dir_height = dir_p && dir_p != p ? get_height(dir_p) : 0;
   return (esq_height > dir_height ? esq_height : dir_height) + 1;
 }
 
