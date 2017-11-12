@@ -1,3 +1,4 @@
+#include <time.h>
 #include <stdio.h>
 #include <limits.h>
 #include <stdlib.h>
@@ -28,7 +29,13 @@ int get_num_nodes(Apontador p) {
   return num_nodes;
 }
 
-int gen(const int MAX_KEY) { return random() % MAX_KEY + 1; }
+int genR(const int MAX_KEY) { return random() % MAX_KEY + 1; }
+
+int genA(const int MAX_KEY) {
+  static int counter = 0;
+  counter += random() % 4;
+  return counter % MAX_KEY + 1;
+}
 
 /*
  * Generates a tree:
@@ -38,7 +45,7 @@ Apontador gen_tree(const int MAX_NUM_KEYS) {
   inicializa(&T);
   for (int i = 0; i < MAX_NUM_KEYS; i++) {
     Registro *reg = (Registro*) malloc(sizeof(Registro));
-    reg->chave = gen(MAX_NUM_KEYS);
+    reg->chave = genA(MAX_NUM_KEYS);
     insere(&T, reg);
   }
   return T;
@@ -50,7 +57,11 @@ int main(int argc, char** argv) {
     return 1;
   } else {
     const int MAX_NUM_KEYS = atoi(argv[1]);
+    clock_t start, end;
+    start = clock();
     Apontador T = gen_tree(MAX_NUM_KEYS);
-    printf("%d, %d\n", get_height(T), get_num_nodes(T));
+    end = clock();
+    printf("%d, %d, %lf\n",
+      get_height(T), get_num_nodes(T), ((double)(end - start))/CLOCKS_PER_SEC);
   }
 }
