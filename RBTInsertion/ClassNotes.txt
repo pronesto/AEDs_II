@@ -64,7 +64,7 @@ int main(int argc, char** argv) {
 
 [Makefile]
 ...
-_OBJ_SORT = treeSort1.o $(_OBJ)
+_OBJ_SORT = treeSort.o $(_OBJ)
 OBJ_SORT = $(patsubst %,$(ODIR)/%,$(_OBJ_SORT))
 
 treeSort1: $(OBJ_SORT)
@@ -115,30 +115,32 @@ TipoChave gen2() {
 
 ==== Properties ====
 
+0 Red-Black trees are binary search trees, so, all the properties of BST apply.
+* Additionally, we have the following properties:
 1 Each node is either red or black.
-2 All leaves are black.
-3 If a node is red, then both its children are black.
-4 Every path from a given node to any of its descendant NIL nodes contains the
+2 If a node is red, then both its children are black.
+3 Every path from a given node to any of its descendant NIL nodes contains the
   same number of black nodes.
 
 ? Can you show that "the path from the root to the farthest leaf is no more than twice as long as the path from the root to the nearest leaf."
 
-For a red–black tree T, let B be the number of black nodes in property 4.
+For a red–black tree T, let B be the number of black nodes in property 3.
 Let the shortest possible path from the root of T to any leaf consist of B
 black nodes. Longer possible paths may be constructed by inserting red nodes.
 However, property 3 makes it impossible to insert more than one consecutive red
-node. Therefore, ignoring any black NIL leaves, the longest possible path
-consists of 2*B nodes, alternating black and red (this is the worst case).
-Counting the black NIL leaves, the longest possible path consists of 2*B-1
-nodes.
+node. Therefore, the longest possible path consists of 2*B nodes, alternating
+black and red (this is the worst case).
+
 
 ? How's the shortest possible path from root to leaf?
 
 All black nodes.
 
+
 ? How's the longest possible path from root to leaf?
 
 Alternation between red and black nodes
+
 
 ==== Implementation ====
 
