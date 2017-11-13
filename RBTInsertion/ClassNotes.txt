@@ -55,7 +55,6 @@ int main(int argc, char** argv) {
       Insere(Reg, &D);
     }
     end = clock();
-    // Print the tree in dot format:
     Central(D, &print);
     printf("\n");
     fprintf(stderr, "%lf\n", ((double)(end - start))/CLOCKS_PER_SEC);
@@ -161,9 +160,13 @@ struct RedBlackNode {
 
 
 ? How would you insert a new node in the RB-Tree, ensuring the key properties?
+
 1. Nodes are inserted as Red
 2. Nodes are inserted as leaves
 3. Rotate nodes to preserve properties
+
+* Show video of examples of insertions:
+https://www.youtube.com/watch?v=Fg9t64nS4p8&t
 
 * Show video of simple rotation in RBT:
 https://www.youtube.com/watch?v=zomMSaA94Uk&t=8s
@@ -173,6 +176,44 @@ https://www.youtube.com/watch?v=Qfqm4EuIs3w&t=22s
 
 
 === Playing with the Tree ===
+
+? Can you change [treeSort.c] to use the RBT that we have in the git?
+
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "RBT.h"
+int gen1() {
+  return random();
+}
+int gen2() {
+  static int t = 0;
+  return t++;
+}
+void print(RedBlackTree p) {
+  printf("%8d", p->Element);
+}
+int main(int argc, char** argv) {
+  if (argc < 2) {
+    fprintf(stderr, "Syntax: %s num_nodes\n", argv[0]);
+  } else {
+    clock_t start, end;
+    RedBlackTree D;
+    D = Initialize();
+    int i;
+    const int MAX = atoi(argv[1]);
+    start = clock();
+    for (i = 0; i < MAX; i++) {
+      ElementType e = gen1();
+      Insert(e, D);
+    }
+    end = clock();
+    Central_RBT_Header(D, &print);
+    printf("\n");
+    fprintf(stderr, "%lf\n", ((double)(end - start))/CLOCKS_PER_SEC);
+  }
+}
+
 
 ? Can you implement a program to find the height of the RBT?
 
@@ -188,9 +229,18 @@ int RBT_Height(RedBlackTree T) {
   return MAX(height_esq, height_dir) + 1;
 }
 
+int main(int argc, char** argv) {
+  ...
+  fprintf(stderr, "%lf, %d\n", ((double)(end - start))/CLOCKS_PER_SEC,
+        RBT_Height(D));
+  ...
+}
+
 
 ? Could you compare it with the program that finds the height of a binary
   search tree?
+
+#define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
 
 int Tree_Height(Apontador T) {
   int height_esq = 0;
@@ -202,9 +252,24 @@ int Tree_Height(Apontador T) {
   return MAX(height_esq, height_dir) + 1;
 }
 
+int main(int argc, char** argv) {
+  ...
+  fprintf(stderr, "%lf, %d\n", ((double)(end - start))/CLOCKS_PER_SEC,
+        Tree_Height(D));
+  ...
+}
+
 
 ? How would be a "driver", i.e., a program that invokes those two routines?
 
+#include "Tree.h"
+#include "RBT.h"
+#include "TreeGen.h"
+...
+#define MAX(X, Y) ((X) > (Y) ? (X) : (Y))
+int RBT_Height(RedBlackTree T) { ... }
+int Tree_Height(Apontador T) { ... }
+...
 int  main(int argc, char** argv) {
   if (argc == 3) {
     const int num_nodes = atoi(argv[1]);
