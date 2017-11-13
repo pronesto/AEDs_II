@@ -1,4 +1,18 @@
-* Self-Balancing Trees
+* Recap: binary search trees:
+
+? How to define a binary tree?
+
+- Nothing is a binary tree.
+- An element E, plus two binary trees, T1 and T2, are binary trees.
+
+
+? How to define a binary search tree?
+
+- Nothing is a binary search tree.
+- An element E, plus two trees, T1 and T2, are binary search trees if:
+  - Every element in T1 is less than E.
+  - Every element in T2 is greater than E.
+
 
 ? What's the worst-case complexity of each one of these operations on trees?
   ? Insert
@@ -13,11 +27,21 @@
   our sorting routine?
 
 
-? [treeSort1.c] Implement a tree-based sort algorithm:
+? [treeSort.c] Implement a tree-based sort algorithm:
 
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "Tree.h"
+TipoChave gen1() {
+  return random();
+}
+void print(Apontador p) {
+  printf("%8d", p->Reg.Chave);
+}
 int main(int argc, char** argv) {
-  if (argc < 1) {
-    fprintf(stderr, "Syntax: %s num_nodes", argv[0]);
+  if (argc < 2) {
+    fprintf(stderr, "Syntax: %s num_nodes\n", argv[0]);
   } else {
     clock_t start, end;
     Apontador D;
@@ -27,21 +51,41 @@ int main(int argc, char** argv) {
     start = clock();
     for (i = 0; i < MAX; i++) {
       Registro Reg;
-      Reg.Chave = gen();
+      Reg.Chave = gen1();
       Insere(Reg, &D);
     }
     end = clock();
     // Print the tree in dot format:
     Central(D, &print);
-    printf("\nTime = %lf secs\n", ((double)(end - start))/CLOCKS_PER_SEC);
+    printf("\n");
+    fprintf(stderr, "%lf\n", ((double)(end - start))/CLOCKS_PER_SEC);
   }
 }
 
+[Makefile]
+...
+_OBJ_SORT = treeSort1.o $(_OBJ)
+OBJ_SORT = $(patsubst %,$(ODIR)/%,$(_OBJ_SORT))
 
-? [treeSort1.c] Implement a gen() function that always produces keys in
+treeSort1: $(OBJ_SORT)
+        $(CC) -Wall -o $@ $^ $(CFLAGS)
+...
+
+
+
+? [treeSort.bash] try to get the times for inputs of different sizes:
+
+#!/bin/bash
+for ((num_nodes = 100; num_nodes < 5000; num_nodes += 400))
+do
+  ./treeSort $num_nodes > /dev/null ;
+done
+
+
+? [treeSort.c] Change gen1(), so that it will always produces keys in
   ascending order:
 
-TipoChave gen() {
+TipoChave gen2() {
   static TipoChave t = 0;
   return t++;
 }
@@ -50,11 +94,9 @@ TipoChave gen() {
 ? What is the meaning of 'static' in the program above?
 
 
-? [treeSort2.c] try to get the times for inputs of different sizes:
-for ((num_nodes = 100; num_nodes < 5000; num_nodes += 200))
-do
-  ./TimeTreeMain $num_nodes 0 > /dev/null ;
-done
+? How the time behavior of the two gen functions compare, in terms of the
+  speed of the tree-based sorting algorithm?
+
 
 ? What if we had guarantees that the height of the tree is at most h?
 
@@ -191,3 +233,49 @@ int  main(int argc, char** argv) {
     }
   }
 }
+
+
+? Write a function that determines the Black Height of a Red-Black tree, and
+  certifies that it obeys the property that this height is constant from any
+  node:
+
+int RBT_Black_Height(RedBlackTree T) {
+  if (isNullNode(T)) {
+    return 0;
+  } else {
+    int black_height_esq = RBT_Black_Height(T->Left);
+    int black_height_dir = RBT_Black_Height(T->Right);
+    // We check if T is not the Root (Element == NegInfinity)
+    if (T->Element != NegInfinity && black_height_dir != black_height_esq) {
+      printf("Error at node %d (%d vs %d)\n",
+          T->Element, black_height_esq, black_height_dir);
+    }
+    return MAX(black_height_esq, black_height_dir) +
+      (T->Color == Black ? 1 : 0);
+  }
+}
+
+int  main(int argc, char** argv) {
+  ...
+  RedBlackTree P3 = genRandomRBT(num_nodes, 5 * num_nodes);
+  printf("Altura da arvore: %d\n", RBT_Height(P3));
+  printf("Altura negra da arvore: %d\n", RBT_Black_Height(P3));
+}
+
+
+? Compare a bit the heights of ordinary trees and the height of red-black trees.
+  Is there much difference in their growth pattern?
+
+$> ./HeightTreeMain 4000 0
+Altura da arvore: 4000
+
+$> ./HeightTreeMain 4000 1
+Altura da arvore: 26
+
+$> ./HeightTreeMain 4000 2
+Altura da arvore: 21
+Altura negra da arvore: 12
+
+$> ./HeightTreeMain 4000 3
+Altura da arvore: 16
+Altura negra da arvore: 11
