@@ -8,32 +8,34 @@
 
 if [ $# -lt 3 ]
 then
-  echo "Syntax: timeTree min_nodes max_nodes stp_nodes"
-  echo "Default values: min_nodes = 100, max_nodes = 110101, stp_nodes = 10000"
-  min_nodes=10000
-  max_nodes=100001
-  stp_nodes=10000
+  echo "Syntax: timeTree min max stp"
+  echo "Default values: min = 100, max = 110101, stp = 10000"
+  min=10000
+  max=100001
+  stp=10000
 else
-  min_nodes=$1
-  max_nodes=$2
-  stp_nodes=$3
-  echo "min_nodes = $min_nodes, max_nodes = $max_nodes, stp_nodes = $stp_nodes"
+  min=$1
+  max=$2
+  stp=$3
+  echo "min_nodes = $min, max_nodes = $max, step = $stp"
 fi
 
-echo "BinT, Height, Num-Nodes, Time (s)"
-for ((num_nodes = $min_nodes; num_nodes < $max_nodes; num_nodes += $stp_nodes))
-do
-  ./BinTComp $num_nodes ;
-done
+run_test() {
+  echo "$1, Num-Nodes, Time (s)"
+  for ((num_nodes = $min; num_nodes < $max; num_nodes += $stp))
+  do
+    ./$1 $num_nodes ;
+  done
+}
 
-echo "Trie, Height, Num-Nodes, Time (s)"
-for ((num_nodes = $min_nodes; num_nodes < $max_nodes; num_nodes += $stp_nodes))
-do
-  ./TrieComp $num_nodes ;
-done
+# Testing the binary search tree:
+clang BinT.c T2.c -o BinTComp -Iinclude ;
+run_test BinTComp ;
 
-echo "RBT, Height, Num-Nodes, Time (s)"
-for ((num_nodes = $min_nodes; num_nodes < $max_nodes; num_nodes += $stp_nodes))
-do
-  ./RBTComp $num_nodes ;
-done
+# Testing the bit-trie:
+clang Trie.c T2.c -o TrieComp -Iinclude ;
+run_test TrieComp ;
+
+# Testing the Red-Black tree:
+clang RBT.c T2.c -o RBTComp -Iinclude ;
+run_test RBTComp ;
