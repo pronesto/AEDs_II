@@ -33,6 +33,12 @@ do
   ./BitArraySet $num_nodes $num_nodes ;
 done
 
+echo "rbt_sort, Time (s)"
+for ((num_nodes = $min_nodes; num_nodes < $max_nodes; num_nodes += $stp_nodes))
+do
+  ./RBTSet $num_nodes $num_nodes ;
+done
+
 echo "hst_sort, Time (s)"
 for ((num_nodes = $min_nodes; num_nodes < $max_nodes; num_nodes += $stp_nodes))
 do
