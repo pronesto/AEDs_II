@@ -35,6 +35,11 @@ run_test IntArraySet
 clang RedBlackSet.c RBT.c CompSetMain.c -o RBTMain -Iinclude
 run_test RBTSet
 
-# run_test BitArraySet
-# run_test HashSet
-# run_test NoEqualHashSet
+clang -o BitArraySet CompSetMain.c BitArraySet.c -Iinclude
+run_test BitArraySet
+
+clang -o HashSet CompSetMain.c HashSet.c -Iinclude
+run_test HashSet
+
+clang -o NoEqualHashSet CompSetMain.c NoEqualHashSet.c -Iinclude
+run_test NoEqualHashSet

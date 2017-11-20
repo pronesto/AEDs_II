@@ -35,12 +35,30 @@ void close(Set s) {
 }
 
 
+? Assuming you have this implementation in T0.c, how do you compile it?
+$> clang -o IntArraySet CompSetMain.c T0.c -Iinclude
+
+
 ? Could you compare the access times of this implementation against the access
   times of the red-black-based implementation?
   - see timeSet.bash
 
 
 ? What is the size, in bytes, taken by the set? How could we check that?
+
+#include <stdio.h>
+void initialize(Set* s) {
+  *s = (Set)malloc(sizeof(struct set_concrete));
+  (*s)->array = (unsigned*)calloc(UINT_MAX, sizeof(unsigned));
+  printf("Size = %lu\n", UINT_MAX * sizeof(unsigned));
+}
+
+
+? This size is even larger than the amount of physical memory available for
+  this computer. How is that possible?
+
+
+? Could you simply allocate the array statically, and check its size?
 
 #include <stdio.h>
 #include <limits.h>
@@ -154,10 +172,19 @@ Segmentation fault: 11
 ? How can we still deal with keys of the 'long' type?
 
 
+* Hash-Tables
+
+
 ? Which kind of structures would you think about to build a hash table?
 
 
 ? What are the types that implement a hash table with separate chaining?
+
+#include <stdio.h>
+#include <limits.h>
+#include <stdlib.h>
+
+#include "Set.h"
 
 struct node {
   Key key;
@@ -204,11 +231,15 @@ $> valgrind ./HashSet 10000 10000
 ==46852==    indirectly lost: 59,248 bytes in 3,703 blocks
 
 
-? Can you now implement the 'insert' function?
+? How would be implemented the hash function?
 
 size_t hash(Key element) {
   return element & TABLE_SIZE;
 }
+
+
+? Can you now implement the 'insert' function?
+  - What are the actions implemented in insert?
 
 void insert(Set s, Key element) {
   struct node* it;
@@ -218,6 +249,10 @@ void insert(Set s, Key element) {
   it->next = s->table[h];
   s->table[h] = it;
 }
+
+
+? How would be the table that results from inserting 12, 5, 20, 17, 31 onto
+  a hash with four buckets (hash(Key x) {return x % 4;}).
 
 
 ? What about the 'contains' function?
@@ -306,3 +341,14 @@ hst_sort, neq_sort
 0.019481, 0.017243
 0.023524, 0.016220
 0.024059, 0.026700
+
+
+? What if I increase the number of keys within the hash? Does the time behavior
+  change?
+
+
+? What about the relative time between the Red-Black tree and the Hash table?
+  How do they compare if we change the number of elements in the table?
+
+
+? What if I increase the size of the table?
