@@ -99,9 +99,9 @@ void printDot_aux(Apontador p) {
     fprintf(file, "  %lu [shape = point];\n", (long)p);
   }
   if (getEsq(p))
-    fprintf(file, "  %lu -> %lu [label = 0]\n", (long)p, (long)getEsq(p));
+    fprintf(file, "  %lu -> %lu\n", (long)p, (long)getEsq(p));
   if (getDir(p))
-    fprintf(file, "  %lu -> %lu [label = 1]\n", (long)p, (long)getDir(p));
+    fprintf(file, "  %lu -> %lu\n", (long)p, (long)getDir(p));
 }
 void printDot(Apontador p, char* file_name) {
   file = fopen(file_name, "w");
@@ -166,8 +166,8 @@ void printDot_aux(Apontador p) {
 #include <limits.h>
 ...
 char* int2bin(int num) {
-  // Remember: sizeof(char) == 1 always, always (defined in the C standard).
   int num_bits = CHAR_BIT * sizeof(int);
+  // Remember: sizeof(char) == 1 always, always (defined in the C standard).
   char* str = (char*)malloc(num_bits + 1);
   str[num_bits] = '\0';
   for (int i = 0; i < num_bits; i++) {
@@ -417,3 +417,29 @@ Apontador gen_tree(const int MAX_NUM_KEYS) {
   reg->chave = genA(MAX_NUM_KEYS);
   ...
 }
+
+
+? How do tries compare to hash-tables? What are the advantages of Tries?
+- Best worst case lookup
+- Easy to sort the elements
+- No need of a hash function
+
+
+? And what are the disadvantages?
+- Usually slower access time on the average case.
+- Might require more space on the average.
+
+
+? Can you think about a cool application of a string-trie?
+- auto-complete text.
+
+
+? If we use a trie to sort data, which sorting algorithm are we emulating?
+- Radix-Sort
+
+
+? How does a trie (i.e., a string trie) compare against a Red-Black Tree?
+  What are the advantages?
+- We avoid comparisons when searching, as we compare one character at a time,
+  and never backtrack. In a RBT, we might have to compare strings multiple
+  times to find a key.
